@@ -9,7 +9,7 @@ import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar"
 const SignIn = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { user , setUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     function handleSubmit() {
         signInWithEmailAndPassword(auth, email, password)
             .then(({ user }) => getUserById(user.uid))

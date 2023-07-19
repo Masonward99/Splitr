@@ -5,7 +5,9 @@ import SignIn from "../pages/SignIn";
 import { useContext } from "react";
 import { UserContext } from "../contexts/User";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "../pages/Home";
+import Profile from "../pages/Profile";
+import EditProfile from "../pages/EditProfile";
+
 
 const Nav = () => {
     const Stack = createNativeStackNavigator();
@@ -14,15 +16,16 @@ const Nav = () => {
   return (
       <NavigationContainer>
           {!user ?
-            //   user signed in state
+            //   user not signed in
               <Stack.Navigator initialRouteName="SignIn">
                   <Stack.Screen name="SignIn" component={SignIn} />
                   <Stack.Screen name="SignUp" component={SignUp} />
               </Stack.Navigator>
               :
-            //   user not signed in
+            //   user signed in
               <Tab.Navigator>
-                  <Tab.Screen name="home" component={Home}/>
+                  <Tab.Screen name="home" component={Profile} />
+                  <Tab.Screen name="edit" component={EditProfile}/>
               </Tab.Navigator>
           }
     </NavigationContainer>
