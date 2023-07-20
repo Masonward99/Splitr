@@ -4,6 +4,7 @@ import { UserContext } from "../contexts/User"
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import SignOutConfirmation from "../modals/SignOutConfirmation";
 import { getUserById } from "../functions";
+import ProfileData from "../components/ProfileData";
 
 const Profile = ({ navigation }) => {
     const { user, setUser } = useContext(UserContext);
@@ -17,10 +18,7 @@ const Profile = ({ navigation }) => {
     
     return (
         <View>
-            <Image source={{ uri: user.image }} style={{height:300, width:300} } />
-            <Text>First name: {user.firstName}</Text>
-            <Text>Last name: {user.lastName}</Text>
-            {user.bio !== '' ? <Text>Bio: {user.bio}</Text> : null}
+            <ProfileData user={user}/>
             <SignOutConfirmation isModalVisible={isModalVisible} navigation={navigation} setIsModalVisible={setIsModalVisible} />
             <TouchableOpacity onPress={handleEdit} >
                 <Text>Edit</Text>
