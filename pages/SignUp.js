@@ -3,30 +3,30 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Text, View, TextInput, Button } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { auth } from '../firebaseConfig';
-import { addUser } from "../functions";
+import { addUser, getUserById } from "../functions";
 import { UserContext } from "../contexts/User";
 
 const SignUp = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [first, setFirst] = useState("");
-    const [last, setLast] = useState("")
+    const [name, setName] = useState("");
     const [state, setState] = useState(false)
     const {setUser} = useContext(UserContext)
     function handlePress() {
-        if (email != '' && password != "" && first !== "" && last !== "") {
+        if (email != '' && password != "" && name !== "" ) {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCred) => {
                     const user = userCred.user;
                     return user;
                 })
                 .then(user => {
-                    addUser(user.uid, first, last);
+                    addUser(user.uid, name);
                     return user.uid
                 })
                 .then((user) => {
-                    setUser({id:user.uid, firstName: first, lastName: last})
+                    getUserById(user)
                 })
+                .then((user)=>setUser(user))
                 .catch((err) => {
                     console.log(err.message);
                 });

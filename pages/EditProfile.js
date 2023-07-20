@@ -3,11 +3,12 @@ import { TouchableOpacity, View, Text, Image, TextInput } from 'react-native';
 import { addProfilePic, getUserById, updateProfile } from '../functions';
 import { useContext, useState } from 'react';
 import { UserContext } from '../contexts/User';
+import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 
 const EditProfile = ({navigation}) => {
     const { user, setUser } = useContext(UserContext);
-    const [image, setImage] = useState(false)
-    const [bio, setBio] = useState('')
+    const [image, setImage] = useState(false);
+    const [bio, setBio] = useState('');
     
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -21,13 +22,13 @@ const EditProfile = ({navigation}) => {
         }
     }
     async function handleSubmit() {
-        const res = await addProfilePic(user.id, image)
+        const res = await addProfilePic(user.id, image);
         updateProfile(user.id, res, bio)
-            .then(()=>getUserById(user.id))
-            .then((user)=> setUser(user))
-            .then(navigation.navigate("Profile"))
+            .then(() => getUserById(user.id))
+            .then((user) => setUser(user))
+            .then(navigation.navigate("Profile"));
         
-    }
+    };
     return (
         <View>
             <TouchableOpacity onPress={pickImage}>
@@ -39,6 +40,7 @@ const EditProfile = ({navigation}) => {
             <TouchableOpacity onPress={handleSubmit}>
                 <Text>Confirm changes</Text>
             </TouchableOpacity>
+            <ExpoStatusBar/>
         </View>
     )
     
