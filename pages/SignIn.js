@@ -1,14 +1,19 @@
 import { signInWithEmailAndPassword } from "firebase/auth"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Button, TextInput, View, Text } from "react-native"
 import { auth } from "../firebaseConfig"
+import { getUserById } from "../functions"
+import { UserContext } from "../contexts/User"
+import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar"
 
 const SignIn = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const { setUser } = useContext(UserContext);
     function handleSubmit() {
         signInWithEmailAndPassword(auth, email, password)
-            .then(({ user }) => console.log(user.uid))
+            .then(({ user }) => getUserById(user.uid))
+            .then((user) => { setUser(user) })
     }
     function nav() {
         navigation.navigate("SignUp");
@@ -21,7 +26,8 @@ const SignIn = ({ navigation }) => {
             <Text>Password</Text>
             <TextInput placeholder="password..." onChangeText={setPassword} value={password} secureTextEntry={true} />
             <Button title="submit" onPress={handleSubmit} />
-            <Button title='SignUp' onPress={nav}/>
+            <Button title='SignUp' onPress={nav} />
+            <ExpoStatusBar/>
         </View>
     )
 }
