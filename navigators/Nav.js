@@ -5,8 +5,7 @@ import SignIn from "../pages/SignIn";
 import { useContext } from "react";
 import { UserContext } from "../contexts/User";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Profile from "../pages/Profile";
-import EditProfile from "../pages/EditProfile";
+import ProfileNavigator from "./ProfileNavigator";
 
 
 const Nav = () => {
@@ -24,8 +23,7 @@ const Nav = () => {
               :
             //   user signed in
               <Tab.Navigator>
-                  <Tab.Screen name="home" component={Profile} />
-                  <Tab.Screen name="edit" component={EditProfile}/>
+                  <Tab.Screen name="Own Profile" component={ProfileNavigator} options={{headerShown:false}}/>
               </Tab.Navigator>
           }
     </NavigationContainer>

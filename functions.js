@@ -1,15 +1,19 @@
-import { collection, setDoc, addDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, setDoc, addDoc, getDocs, query, where, doc, updateDoc } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 import { storage } from "./firebaseConfig";
 import {  getDownloadURL, ref, uploadBytes, uploadString } from "firebase/storage";
 
 export const addUser = async (id, firstName, lastName) => {
     try {
-        const docRef = await addDoc(collection(db, "users"), {
-            id,
-            firstName,
-            lastName
-        })
+        const docRef = await setDoc(doc(db, "users", `${id}`) ,{
+          id,
+          firstName,
+          lastName,
+          followers: [],
+          following: [],
+          bio: "",
+          image:"https://firebasestorage.googleapis.com/v0/b/splitr-d3d02.appspot.com/o/default.jpg?alt=media&token=3bdf1b9f-3892-4095-bfb9-f27e1d477ff8",
+        });
     }
     catch (e) {
         console.log(e)
@@ -37,8 +41,15 @@ export const addProfilePic = async (id, uri) => {
     const response = await fetch(uri);
     let url;
     const blob = await response.blob()
-    return uploadBytes(imageRef, blob)
-        .then(() => getDownloadURL(imageRef))
-        .then(res => url = res)
-        .catch(e => console.log(e))
+    await uploadBytes(imageRef, blob)
+    url = await getDownloadURL(imageRef)
+    return url
+}
+
+export const updateProfile = async (id, uri, bio) => {
+    const docRef = doc(db, "users", `${id}`)
+    await updateDoc(docRef, {
+        image: uri,
+        bio
+    })
 }
